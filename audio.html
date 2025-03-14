@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modo de Fundo</title>
+</head>
+<body>
+    <h1>Modo de Fundo com Web Audio API</h1>
+    <button id="playButton">Tocar Áudio</button>
+
+    <script>
+        let audioContext;
+        let audioElement;
+        let track;
+
+        function setupAudio() {
+            // Criando o AudioContext
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            audioElement = new Audio("media/audio.mp3"); // 🔹 Coloque aqui o link do seu áudio
+
+            // Criando um nó de mídia para conectar ao contexto de áudio
+            track = audioContext.createMediaElementSource(audioElement);
+            track.connect(audioContext.destination);
+        }
+
+        document.getElementById("playButton").addEventListener("click", function () {
+            if (!audioContext) {
+                setupAudio();
+            }
+            audioContext.resume().then(() => {
+                audioElement.play();
+                console.log("Áudio tocando...");
+            });
+        });
+
+        document.getElementById("pauseButton").addEventListener("click", function () {
+            if (audioElement) {
+                audioElement.pause();
+                console.log("Áudio pausado...");
+            }
+        });
+    </script>
+</body>
+</html>
