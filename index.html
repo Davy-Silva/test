@@ -3,51 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Evitar Saída</title>
 </head>
 <body>
-    <button id="playButton">Entrar em Tela Cheia</button>
+    <button id="playButton">Clique Para Começar</button>
 
     <script>
-        // 2️⃣ Exibe um aviso ao tentar sair da página
+        // 1️⃣ Exibe um aviso ao tentar sair da página
         window.addEventListener("beforeunload", function (event) {
             event.preventDefault();
-            event.returnValue = "Tem certeza que deseja sair?";
+            event.returnValue = "";
         });
 
-        // 3️⃣ Impede que o usuário use o botão de voltar
+        // 2️⃣ Impede que o usuário use o botão de voltar
         history.pushState(null, null, location.href);
         window.addEventListener("popstate", function () {
-            window.location.href = "https://davy-silva.github.io/test/";
+            if (location.href !== "https://davy-silva.github.io/test/") {
+                window.location.href = "https://davy-silva.github.io/test/";
+            }
         });
 
-        // 4️⃣ Ativa o modo tela cheia quando o usuário clica no botão
+        // 3️⃣ Ativa o modo tela cheia quando o usuário clica no botão
         document.getElementById("playButton").addEventListener("click", () => {
             document.documentElement.requestFullscreen();
         });
 
-        // Audio
+        // 4️⃣ Áudio
         let audioContext;
         let audioElement;
         let track;
 
         function setupAudio() {
-            // Criando o AudioContext
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            audioElement = new Audio("media/audio.mp3"); // 🔹 Coloque aqui o link do seu áudio
+            if (!audioContext) { // 🔹 Garantindo que só seja criado uma vez
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                audioElement = new Audio("audio.mp3"); // 🔹 Substitua pelo caminho do seu áudio
 
-            // Criando um nó de mídia para conectar ao contexto de áudio
-            track = audioContext.createMediaElementSource(audioElement);
-            track.connect(audioContext.destination);
+                // Criando um nó de mídia para conectar ao contexto de áudio
+                track = audioContext.createMediaElementSource(audioElement);
+                track.connect(audioContext.destination);
+            }
         }
 
         document.getElementById("playButton").addEventListener("click", function () {
-            if (!audioContext) {
-                setupAudio();
-            }
+            setupAudio();
             audioContext.resume().then(() => {
-                audioElement.play();
-                console.log("Áudio tocando...");
+                if (audioElement.paused) {
+                    audioElement.play();
+                    console.log("Áudio tocando...");
+                }
             });
         });
     </script>
