@@ -12,7 +12,7 @@
         // 1️⃣ Detecta se o usuário troca de aba e redireciona de volta
         document.addEventListener("visibilitychange", function () {
             if (document.hidden) {
-                window.location.href = "https://seusite.com";
+                window.location.href = "https://davy-silva.github.io/test/";
             }
         });
 
@@ -25,7 +25,7 @@
         // 3️⃣ Impede que o usuário use o botão de voltar
         history.pushState(null, null, location.href);
         window.addEventListener("popstate", function () {
-            window.location.href = "https://seusite.com";
+            window.location.href = "https://davy-silva.github.io/test/";
         });
 
         // 4️⃣ Ativa o modo tela cheia quando o usuário clica no botão
