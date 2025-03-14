@@ -9,13 +9,6 @@
     <button id="playButton">Entrar em Tela Cheia</button>
 
     <script>
-        // 1️⃣ Detecta se o usuário troca de aba e redireciona de volta
-        document.addEventListener("visibilitychange", function () {
-            if (document.hidden) {
-                window.location.href = "https://davy-silva.github.io/test/";
-            }
-        });
-
         // 2️⃣ Exibe um aviso ao tentar sair da página
         window.addEventListener("beforeunload", function (event) {
             event.preventDefault();
@@ -31,6 +24,31 @@
         // 4️⃣ Ativa o modo tela cheia quando o usuário clica no botão
         document.getElementById("playButton").addEventListener("click", () => {
             document.documentElement.requestFullscreen();
+        });
+
+        // Audio
+        let audioContext;
+        let audioElement;
+        let track;
+
+        function setupAudio() {
+            // Criando o AudioContext
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            audioElement = new Audio("media/audio.mp3"); // 🔹 Coloque aqui o link do seu áudio
+
+            // Criando um nó de mídia para conectar ao contexto de áudio
+            track = audioContext.createMediaElementSource(audioElement);
+            track.connect(audioContext.destination);
+        }
+
+        document.getElementById("playButton").addEventListener("click", function () {
+            if (!audioContext) {
+                setupAudio();
+            }
+            audioContext.resume().then(() => {
+                audioElement.play();
+                console.log("Áudio tocando...");
+            });
         });
     </script>
 </body>
