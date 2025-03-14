@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evitar Saída</title>
+</head>
+<body>
+    <button id="playButton">Entrar em Tela Cheia</button>
+
+    <script>
+        // 1️⃣ Detecta se o usuário troca de aba e redireciona de volta
+        document.addEventListener("visibilitychange", function () {
+            if (document.hidden) {
+                window.location.href = "https://seusite.com";
+            }
+        });
+
+        // 2️⃣ Exibe um aviso ao tentar sair da página
+        window.addEventListener("beforeunload", function (event) {
+            event.preventDefault();
+            event.returnValue = "Tem certeza que deseja sair?";
+        });
+
+        // 3️⃣ Impede que o usuário use o botão de voltar
+        history.pushState(null, null, location.href);
+        window.addEventListener("popstate", function () {
+            window.location.href = "https://seusite.com";
+        });
+
+        // 4️⃣ Ativa o modo tela cheia quando o usuário clica no botão
+        document.getElementById("playButton").addEventListener("click", () => {
+            document.documentElement.requestFullscreen();
+        });
+    </script>
+</body>
+</html>
